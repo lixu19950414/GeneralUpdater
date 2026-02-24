@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . \"File Updater\" --platform=win32 --arch=x64 --out=dist --overwrite --ignore=dist --ignore=test-server"
+    "build": "electron-packager . \"GeneralUpdater\" --platform=win32 --arch=x64 --out=dist --overwrite --ignore=dist --ignore=test-server"
   },
   "devDependencies": {
     "electron": "^33.0.0",
