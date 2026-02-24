@@ -1,0 +1,14 @@
+{
+  "name": "electron-file-updater",
+  "version": "1.0.0",
+  "description": "Electron app that patches/updates external application files via JSON manifest",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . \"File Updater\" --platform=win32 --arch=x64 --out=dist --overwrite --ignore=dist --ignore=test-server"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-packager": "^17.1.2"
+  }
+}

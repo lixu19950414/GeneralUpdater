@@ -1,0 +1,281 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #e0e0e0;
+  background: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Input bar ── */
+.input-bar {
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #252526;
+  border-bottom: 1px solid #333;
+}
+
+.input-bar label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  color: #aaa;
+  font-size: 11px;
+}
+
+.input-bar label:first-child {
+  flex: 2;
+}
+
+.input-bar input[type="text"] {
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 3px;
+  color: #e0e0e0;
+  padding: 5px 8px;
+  font-size: 13px;
+  outline: none;
+}
+
+.input-bar input[type="text"]:focus {
+  border-color: #007acc;
+}
+
+.folder-row {
+  display: flex;
+  gap: 6px;
+}
+
+.folder-row input {
+  flex: 1;
+}
+
+/* ── Buttons ── */
+button {
+  background: #0e639c;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+button:hover:not(:disabled) {
+  background: #1177bb;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ── Manifest info ── */
+.manifest-info {
+  display: flex;
+  gap: 16px;
+  padding: 6px 12px;
+  background: #2d2d30;
+  font-size: 12px;
+  color: #ccc;
+  border-bottom: 1px solid #333;
+}
+
+.manifest-info span::before {
+  color: #888;
+  margin-right: 4px;
+}
+
+#manifest-name::before { content: "App:"; }
+#manifest-version::before { content: "Version:"; }
+#manifest-file-count::before { content: "Files:"; }
+
+/* ── Overall progress ── */
+.overall-section {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #252526;
+  border-bottom: 1px solid #333;
+}
+
+.progress-bar-container {
+  flex: 1;
+  height: 14px;
+  background: #333;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #0e639c;
+  transition: width 0.15s;
+}
+
+#overall-stats {
+  white-space: nowrap;
+  font-size: 12px;
+  color: #aaa;
+  min-width: 160px;
+  text-align: right;
+}
+
+/* ── Action bar ── */
+.action-bar {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #252526;
+  border-bottom: 1px solid #333;
+  align-items: center;
+}
+
+.checkbox-label {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #aaa;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ── File list ── */
+.file-list-container {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+th {
+  background: #2d2d30;
+  text-align: left;
+  padding: 5px 8px;
+  font-weight: 600;
+  font-size: 11px;
+  color: #aaa;
+  border-bottom: 1px solid #444;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: 4px 8px;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 12px;
+}
+
+.col-status { width: 110px; }
+.col-size { width: 80px; text-align: right; }
+.col-progress { width: 140px; }
+
+tr:hover {
+  background: #2a2d2e;
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-pending    { background: #444; color: #aaa; }
+.status-up-to-date { background: #1b3a1b; color: #4ec94e; }
+.status-needs-update { background: #3a2e1b; color: #e8a838; }
+.status-new        { background: #1b2e3a; color: #38a8e8; }
+.status-downloading { background: #0e639c; color: #fff; }
+.status-verifying  { background: #5c3d7a; color: #d4b0f0; }
+.status-done       { background: #1b3a1b; color: #4ec94e; }
+.status-error      { background: #3a1b1b; color: #e84e4e; }
+.status-orphan     { background: #3a3a1b; color: #c8c838; }
+.status-cancelled  { background: #444; color: #aaa; }
+
+/* Per-file progress bar */
+.file-progress-bar-container {
+  height: 10px;
+  background: #333;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.file-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #0e639c;
+  transition: width 0.1s;
+}
+
+/* ── Log panel ── */
+.log-panel {
+  height: 140px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #444;
+}
+
+.log-header {
+  background: #2d2d30;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#log-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 12px;
+  font-family: "Cascadia Code", "Consolas", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  background: #1a1a1a;
+  color: #bbb;
+}
+
+.log-line {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.log-error { color: #e84e4e; }
+.log-warn  { color: #e8a838; }
+.log-info  { color: #38a8e8; }
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #1e1e1e; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }

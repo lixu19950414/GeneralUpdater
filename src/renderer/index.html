@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self'; script-src 'self';">
+  <title>File Updater</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Top bar: manifest URL + folder -->
+  <div class="input-bar">
+    <label>
+      Manifest URL
+      <input type="text" id="manifest-url" placeholder="https://example.com/manifest.json">
+    </label>
+    <label class="folder-label">
+      Target Folder
+      <span class="folder-row">
+        <input type="text" id="folder-path" readonly placeholder="Select a folder…">
+        <button id="btn-browse">Browse</button>
+      </span>
+    </label>
+  </div>
+
+  <!-- Manifest info -->
+  <div id="manifest-info" class="manifest-info hidden">
+    <span id="manifest-name"></span>
+    <span id="manifest-version"></span>
+    <span id="manifest-file-count"></span>
+  </div>
+
+  <!-- Overall progress -->
+  <div id="overall-section" class="overall-section hidden">
+    <div class="progress-bar-container">
+      <div id="overall-bar" class="progress-bar"></div>
+    </div>
+    <span id="overall-stats"></span>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="action-bar">
+    <button id="btn-scan" disabled>Scan &amp; Compare</button>
+    <button id="btn-update" disabled>Start Update</button>
+    <button id="btn-cancel" disabled>Cancel</button>
+    <label class="checkbox-label">
+      <input type="checkbox" id="chk-orphans"> Delete orphan files
+    </label>
+  </div>
+
+  <!-- File list -->
+  <div class="file-list-container">
+    <table id="file-table">
+      <thead>
+        <tr>
+          <th class="col-status">Status</th>
+          <th class="col-file">File</th>
+          <th class="col-size">Size</th>
+          <th class="col-progress">Progress</th>
+        </tr>
+      </thead>
+      <tbody id="file-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Log panel -->
+  <div class="log-panel">
+    <div class="log-header">Log</div>
+    <div id="log-output"></div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
