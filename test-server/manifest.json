@@ -1,0 +1,25 @@
+{
+  "version": "1.2.3",
+  "name": "Test Application",
+  "baseDownloadUrl": "http://localhost:8080/files/",
+  "files": [
+    {
+      "path": "bin/app.exe",
+      "md5": "b98fc3594810416ea3f55b3fd3c25043",
+      "size": 34,
+      "url": "bin/app.exe"
+    },
+    {
+      "path": "config/settings.json",
+      "md5": "b1a30e25fd4bdb83cfec7d9c4a88cec4",
+      "size": 43,
+      "url": "config/settings.json"
+    },
+    {
+      "path": "data/records.csv",
+      "md5": "c0b6b251702f1fc830dd82a1193673b9",
+      "size": 47,
+      "url": "data/records.csv"
+    }
+  ]
+}
