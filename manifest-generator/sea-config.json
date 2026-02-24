@@ -1,0 +1,4 @@
+{
+  "main": "generate-manifest.js",
+  "output": "sea-prep.blob"
+}
