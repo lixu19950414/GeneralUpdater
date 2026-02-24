@@ -21,7 +21,7 @@ class UpdaterCore {
 
   /**
    * Scan local files and compare against manifest.
-   * Returns { files: [{path, size, status, sha256}], orphans: [string] }
+   * Returns { files: [{path, size, status, md5}], orphans: [string] }
    */
   async scan() {
     const manifestPaths = new Set();
@@ -44,7 +44,7 @@ class UpdaterCore {
         status = 'new';
       } else {
         const localHash = await hashFile(absPath);
-        status = localHash.toLowerCase() === entry.sha256.toLowerCase()
+        status = localHash.toLowerCase() === entry.md5.toLowerCase()
           ? 'up-to-date'
           : 'needs-update';
       }
@@ -52,7 +52,7 @@ class UpdaterCore {
       results.push({
         path: entry.path,
         size: entry.size,
-        sha256: entry.sha256,
+        md5: entry.md5,
         url: entry.url,
         status,
       });
@@ -120,7 +120,7 @@ class UpdaterCore {
           await downloadFile({
             url: downloadUrl,
             destPath,
-            expectedHash: file.sha256,
+            expectedHash: file.md5,
             expectedSize: file.size,
             signal,
             onProgress: (downloaded, total) => {

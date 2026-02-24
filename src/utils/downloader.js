@@ -5,12 +5,12 @@ const path = require('path');
 const crypto = require('crypto');
 
 /**
- * Download a file to a .tmp path, verify SHA256, then atomically rename.
+ * Download a file to a .tmp path, verify MD5, then atomically rename.
  *
  * @param {object} opts
  * @param {string} opts.url          Full download URL
  * @param {string} opts.destPath     Final file path
- * @param {string} opts.expectedHash Expected SHA256 hex
+ * @param {string} opts.expectedHash Expected MD5 hex
  * @param {number} opts.expectedSize Expected file size in bytes
  * @param {AbortSignal} opts.signal  Cancellation signal
  * @param {(downloaded: number, total: number) => void} opts.onProgress
@@ -46,7 +46,7 @@ function downloadFile({ url, destPath, expectedHash, expectedSize, signal, onPro
 
       const total = parseInt(res.headers['content-length'], 10) || expectedSize;
       let downloaded = 0;
-      const hash = crypto.createHash('sha256');
+      const hash = crypto.createHash('md5');
       const fileStream = fs.createWriteStream(tmpPath);
 
       res.on('data', (chunk) => {

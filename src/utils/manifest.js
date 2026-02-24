@@ -42,8 +42,8 @@ function validate(m) {
   for (const f of m.files) {
     if (typeof f.path !== 'string' || !f.path)
       throw new Error('File entry missing "path"');
-    if (typeof f.sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(f.sha256))
-      throw new Error(`Invalid sha256 for "${f.path}"`);
+    if (typeof f.md5 !== 'string' || !/^[a-f0-9]{32}$/i.test(f.md5))
+      throw new Error(`Invalid md5 for "${f.path}"`);
     if (typeof f.size !== 'number' || f.size < 0)
       throw new Error(`Invalid size for "${f.path}"`);
 
