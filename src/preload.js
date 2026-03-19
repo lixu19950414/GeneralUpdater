@@ -12,6 +12,10 @@ contextBridge.exposeInMainWorld('updaterAPI', {
   loadSettings: () => ipcRenderer.invoke('load-settings'),
   saveSettings: (data) => ipcRenderer.invoke('save-settings', data),
 
+  scanExecutables: (targetDir) => ipcRenderer.invoke('scan-executables', { targetDir }),
+  runExecutable: (targetDir, relativePath) =>
+    ipcRenderer.invoke('run-executable', { targetDir, relativePath }),
+
   // Main → renderer events
   onLog: (cb) => ipcRenderer.on('log', (_e, data) => cb(data)),
   onFileProgress: (cb) => ipcRenderer.on('file-progress', (_e, data) => cb(data)),

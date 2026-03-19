@@ -21,6 +21,9 @@ const $overallStats = document.getElementById('overall-stats');
 const $fileTbody = document.getElementById('file-tbody');
 const $logOutput = document.getElementById('log-output');
 
+const $exeSection = document.getElementById('exe-section');
+const $exeList = document.getElementById('exe-list');
+
 // ── State ──
 let manifest = null;
 let scanResult = null;
@@ -60,6 +63,45 @@ function statusBadge(status) {
 function clearFileTable() {
   $fileTbody.innerHTML = '';
   fileRows = {};
+}
+
+async function refreshExecutables() {
+  const folder = $folderPath.value;
+  if (!folder) {
+    $exeSection.classList.add('hidden');
+    return;
+  }
+  try {
+    const files = await api.scanExecutables(folder);
+    $exeList.innerHTML = '';
+    if (files.length === 0) {
+      $exeSection.classList.add('hidden');
+      return;
+    }
+    for (const rel of files) {
+      const item = document.createElement('div');
+      item.className = 'exe-item';
+      const span = document.createElement('span');
+      span.textContent = rel;
+      span.title = rel;
+      const btn = document.createElement('button');
+      btn.textContent = 'Run';
+      btn.addEventListener('click', async () => {
+        try {
+          await api.runExecutable(folder, rel);
+          log(`Launched: ${rel}`, 'info');
+        } catch (err) {
+          log(`Failed to launch ${rel}: ${err.message}`, 'error');
+        }
+      });
+      item.appendChild(span);
+      item.appendChild(btn);
+      $exeList.appendChild(item);
+    }
+    $exeSection.classList.remove('hidden');
+  } catch (err) {
+    log(`Failed to scan executables: ${err.message}`, 'error');
+  }
 }
 
 function addFileRow(filePath, size, status) {
@@ -105,6 +147,7 @@ $btnBrowse.addEventListener('click', async () => {
     $folderPath.value = folder;
     saveInputs();
     setButtonStates('idle');
+    refreshExecutables();
   }
 });
 
@@ -167,9 +210,8 @@ $btnScan.addEventListener('click', async () => {
   );
 
   setButtonStates('scanned');
+  refreshExecutables();
 });
-
-// ── Start Update ──
 $btnUpdate.addEventListener('click', async () => {
   setButtonStates('updating');
   $overallSection.classList.remove('hidden');
@@ -191,6 +233,7 @@ $btnUpdate.addEventListener('click', async () => {
   }
 
   setButtonStates('idle');
+  refreshExecutables();
 });
 
 // ── Cancel ──
@@ -228,6 +271,8 @@ api.onScanProgress((data) => {
   if (settings.manifestUrl) $manifestUrl.value = settings.manifestUrl;
   if (settings.folderPath) $folderPath.value = settings.folderPath;
   setButtonStates('idle');
+
+  if (settings.folderPath) refreshExecutables();
 
   // Auto scan if both fields are filled
   if ($manifestUrl.value.trim() && $folderPath.value.trim()) {

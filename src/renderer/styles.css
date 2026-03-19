@@ -274,6 +274,58 @@ tr:hover {
 /* ── Utility ── */
 .hidden { display: none !important; }
 
+/* ── Executables section ── */
+.exe-section {
+  border-top: 1px solid #444;
+  display: flex;
+  flex-direction: column;
+  max-height: 180px;
+}
+
+.exe-header {
+  background: #2d2d30;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.exe-list {
+  overflow-y: auto;
+  padding: 4px 12px;
+  background: #1e1e1e;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.exe-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.exe-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 260px;
+}
+
+.exe-item button {
+  background: #2e7d32;
+  padding: 2px 10px;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.exe-item button:hover:not(:disabled) {
+  background: #388e3c;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #1e1e1e; }

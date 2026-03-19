@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const { spawn } = require('child_process');
 const { fetchManifest } = require('./utils/manifest');
 const { UpdaterCore } = require('./updater-core');
 
@@ -86,4 +87,45 @@ ipcMain.handle('load-settings', async () => {
 
 ipcMain.handle('save-settings', async (_event, data) => {
   saveSettings(data);
+});
+
+ipcMain.handle('scan-executables', async (_event, { targetDir }) => {
+  const results = [];
+  function walk(dir, relBase) {
+    let entries;
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    for (const entry of entries) {
+      const rel = relBase ? relBase + '/' + entry.name : entry.name;
+      if (entry.isDirectory()) {
+        walk(path.join(dir, entry.name), rel);
+      } else if (entry.isFile()) {
+        const lower = entry.name.toLowerCase();
+        if (lower.endsWith('.exe') || lower.endsWith('.cmd')) {
+          results.push(rel);
+        }
+      }
+    }
+  }
+  walk(targetDir, '');
+  results.sort();
+  return results;
+});
+
+ipcMain.handle('run-executable', async (_event, { targetDir, relativePath }) => {
+  const absPath = path.join(targetDir, relativePath.replace(/\//g, path.sep));
+  if (!fs.existsSync(absPath)) throw new Error('File not found: ' + relativePath);
+  const isCmd = absPath.toLowerCase().endsWith('.cmd');
+  const child = isCmd
+    ? spawn('cmd.exe', ['/c', absPath], {
+        detached: true,
+        stdio: 'ignore',
+        cwd: path.dirname(absPath),
+      })
+    : spawn(absPath, [], {
+        detached: true,
+        stdio: 'ignore',
+        cwd: path.dirname(absPath),
+      });
+  child.unref();
+  return { ok: true };
 });
