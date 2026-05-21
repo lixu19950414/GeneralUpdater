@@ -15,6 +15,10 @@ contextBridge.exposeInMainWorld('updaterAPI', {
   scanExecutables: (targetDir) => ipcRenderer.invoke('scan-executables', { targetDir }),
   runExecutable: (targetDir, relativePath) =>
     ipcRenderer.invoke('run-executable', { targetDir, relativePath }),
+  stopExecutable: (targetDir, relativePath) =>
+    ipcRenderer.invoke('stop-executable', { targetDir, relativePath }),
+  checkExeRunning: (targetDir, relativePath) =>
+    ipcRenderer.invoke('check-exe-running', { targetDir, relativePath }),
 
   // Main → renderer events
   onLog: (cb) => ipcRenderer.on('log', (_e, data) => cb(data)),
