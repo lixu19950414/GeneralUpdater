@@ -69,9 +69,16 @@ function downloadFile({ url, destPath, expectedHash, expectedSize, signal, onPro
         try {
           fs.renameSync(tmpPath, destPath);
         } catch {
-          // Cross-device: copy + delete
-          fs.copyFileSync(tmpPath, destPath);
-          fs.unlinkSync(tmpPath);
+          // Cross-device fallback: copy then delete tmp
+          try {
+            fs.copyFileSync(tmpPath, destPath);
+            fs.unlinkSync(tmpPath);
+          } catch (copyErr) {
+            try { fs.unlinkSync(tmpPath); } catch {}
+            return reject(new Error(
+              `Cannot replace ${path.basename(destPath)} — file may be in use. (${copyErr.code})`
+            ));
+          }
         }
         resolve();
       });
